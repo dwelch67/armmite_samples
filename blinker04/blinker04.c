@@ -10,9 +10,16 @@ extern void dummy ( unsigned int );
 
 #define LEDBIT  15
 
+#define MAMCR  0xE01FC000
+#define MAMTIM 0xE01FC004
+
 void notmain ( void )
 {
     unsigned int ra;
+
+    PUT32(MAMCR,0);
+    PUT32(MAMTIM,2);
+    //PUT32(MAMCR,2);
 
     //zero bits 30 and 31 (connect pin to GPIO)
     PUT32(PINSEL0,GET32(PINSEL0)&(~(3<<(LEDBIT<<1))));
