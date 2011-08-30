@@ -84,19 +84,18 @@ the bootloader and bricking the chip.  There is probably a way to
 erase and reprogram that bootloader, proglpc is not capable of erasing
 that memory.
 
-Writing this text and reviewing the schematic it looks like it may
-be possible to program the device without having to use a loadC jumper.
-At the moment proglpc does require a loadC jumper.  This could be as
-simple as a paperclip opened up and folded over so that you can temporarily
-short the two loadC holes together.  proglpc takes care of resetting
-the part.  So if your program is named program.bin and the serial port
-that the ARMmite pro is connected through is /dev/ttyUSB0 then:
+At the moment proglpc requires a loadC jumper.  This could be as
+simple as a paperclip opened up and folded over so that you can
+temporarily short the two loadC holes together.  Proglpc takes care of
+resetting the part.  So if your program is named program.bin and the
+serial port that the ARMmite pro is connected through is /dev/ttyUSB0
+then:
 
 proglpc /dev/ttyUSB0 program.bin
 
-The very first time you program you may need to erase the program shipped
-on the board, putting anything as a fourth item on the command line
-will erase the whole (user) flash before programming the individual
+The very first time you program you may need to erase the program
+shipped on the board, putting anything as a fourth item on the command
+line will erase the whole (user) flash before programming the individual
 flash blocks for your program.
 
 proglpc /dev/ttyUSB0 program.bin x
@@ -109,9 +108,7 @@ interested or done with proglpc.
 
 So at the moment the procedure is:
 
-short the loadC pins
-proglpc /dev/ttyUSB0 program.bin
-press the reset button on the board.
-
-In the near future proglpc may be able to manage both the loadC and
-the second reset.
+1) short the loadC pins
+2) proglpc /dev/ttyUSB0 program.bin
+3) remove the short between loadC pins
+4) press the reset button on the board.
