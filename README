@@ -67,6 +67,51 @@ add /path/to/somewhere/bin to your PATH.  Or perhaps dont use the
 
 
 
+Loading and running programs:
 
+The proglpc directory contains a program that can be used to load
+your programs into the device.  Lpc/nxp and some other chip vendors
+have a nice feature where a small bootloader is in the part and
+depending on the state of an input pin or two you can load your program
+using the serial port.  Each vendor does this their own way but what
+it provides is a way to program the part without having to use additiona
+tools like JTAG programmers, etc.  And you can do this with as little
+as two pins (JTAG normally takes 5 or so).
 
+The bootloader itself is in a separate flash from the flash that you
+will use for your program.  So you dont have to worry about messing up
+the bootloader and bricking the chip.  There is probably a way to
+erase and reprogram that bootloader, proglpc is not capable of erasing
+that memory.
 
+Writing this text and reviewing the schematic it looks like it may
+be possible to program the device without having to use a loadC jumper.
+At the moment proglpc does require a loadC jumper.  This could be as
+simple as a paperclip opened up and folded over so that you can temporarily
+short the two loadC holes together.  proglpc takes care of resetting
+the part.  So if your program is named program.bin and the serial port
+that the ARMmite pro is connected through is /dev/ttyUSB0 then:
+
+proglpc /dev/ttyUSB0 program.bin
+
+The very first time you program you may need to erase the program shipped
+on the board, putting anything as a fourth item on the command line
+will erase the whole (user) flash before programming the individual
+flash blocks for your program.
+
+proglpc /dev/ttyUSB0 program.bin x
+
+Since proglpc is already connected to the serial port of the device
+and your program may want to use the uart for debugging, etc (we will
+get into some samples) proglpc stays connected and prints out whatever
+comes in from the serial port of the device.  Ctrl-C if you are not
+interested or done with proglpc.
+
+So at the moment the procedure is:
+
+short the loadC pins
+proglpc /dev/ttyUSB0 program.bin
+press the reset button on the board.
+
+In the near future proglpc may be able to manage both the loadC and
+the second reset.
